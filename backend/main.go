@@ -31,5 +31,32 @@ func main() {
 		c.JSON(200, gin.H{"message": "pong"})
 	})
 
+	r.POST("/sort", func(c *gin.Context) {
+		var request struct {
+			Algorithm string `json:"algorithm"`
+			Array     []int  `json:"array"`
+		}
+		if err := c.ShouldBindJSON(&request); err != nil {
+			c.JSON(400, gin.H{"error": err.Error()})
+			return
+		}
+
+		var solution Solution[int]
+		switch request.Algorithm {
+		case "bubble":
+			log.Println("Array to sort:", request.Array)
+			solution = BubbleSort(request.Array)
+			log.Println("Solution:", solution)
+		case "bubble-smart":
+			log.Println("Array to sort:", request.Array)
+			solution = BubbleSortSmart(request.Array)
+			log.Println("Solution:", solution)
+		default:
+			c.JSON(400, gin.H{"error": "Invalid algorithm"})
+			return
+		}
+		c.JSON(200, solution.ToJSON())
+	})
+
 	r.Run() // listen on :8080
 }
