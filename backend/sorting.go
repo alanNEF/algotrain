@@ -2,18 +2,25 @@ package main
 
 import "cmp"
 
-func BubbleSort[T cmp.Ordered](arr []T) []T {
+func BubbleSort[T cmp.Ordered](arr []T) Solution[T] {
+	solution := Solution[T]{
+		steps: []Step[T]{},
+	}
 	for i := 0; i < len(arr); i++ {
 		for j := 0; j < len(arr)-i-1; j++ {
 			if cmp.Less(arr[j], arr[j+1]) {
 				arr[j], arr[j+1] = arr[j+1], arr[j]
+				solution.AddStep(arr[j], []int{j, j + 1})
 			}
 		}
 	}
-	return arr
+	return solution
 }
 
-func BubbleSortSmart[T cmp.Ordered](arr []T) []T {
+func BubbleSortSmart[T cmp.Ordered](arr []T) Solution[T] {
+	solution := Solution[T]{
+		steps: []Step[T]{},
+	}
 	swapped := true
 	for i := 0; i < len(arr) && swapped; i++ {
 		swapped = false
@@ -21,10 +28,11 @@ func BubbleSortSmart[T cmp.Ordered](arr []T) []T {
 			if cmp.Less(arr[j], arr[j+1]) {
 				arr[j], arr[j+1] = arr[j+1], arr[j]
 				swapped = true
+				solution.AddStep(arr[j], []int{j, j + 1})
 			}
 		}
 	}
-	return arr
+	return solution
 }
 
 // func SelectionSort[T comparable](arr []T) []T {}
