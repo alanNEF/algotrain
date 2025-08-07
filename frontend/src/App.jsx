@@ -1,30 +1,32 @@
-import { useEffect, useState } from "react"
-import { ping, sort } from "./api"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import Navbar from "./components/Navbar/Navbar"
+import LandingPage from "./components/LandingPage/LandingPage"
+import SortingPage from "./components/sortingPage/sortingPage"
+import SearchingPage from "./components/SearchingPage/SearchingPage"
+import DataStructuresPage from "./components/DataStructuresPage/DataStructuresPage"
+import HashingPage from "./components/HashingPage/HashingPage"
+import RecursionPage from "./components/RecursionPage/RecursionPage"
+import DynamicProgrammingPage from "./components/DynamicProgrammingPage/DynamicProgrammingPage"
+import GreedyPage from "./components/GreedyPage/GreedyPage"
+import "./App.css"
 
 function App() {
-  const [message, setMessage] = useState("")
-  const [solution, setSolution] = useState(null)
-  useEffect(() => {
-    ping().then(data => setMessage(data.message))
-  }, [])
-
-  const handleSort = (algorithm) => {
-    sort(algorithm, [5, 3, 8, 4, 2]).then(data => {
-      console.log(data)
-      setSolution(data)
-    })
-  }
-
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Algorithm Visualizer</h1>
-      <p>Backend says: {message}</p>
-      <div>
-        <button onClick={() => handleSort("bubble")}>Sort</button>
-        <button onClick={() => handleSort("bubble-smart")}>Sort Smart</button>
-        <p>Solution: {JSON.stringify(solution)}</p>
+    <Router>
+      <div className="App">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/sorting" element={<SortingPage />} />
+          <Route path="/searching" element={<SearchingPage />} />
+          <Route path="/data-structures" element={<DataStructuresPage />} />
+          <Route path="/hashing" element={<HashingPage />} />
+          <Route path="/recursion" element={<RecursionPage />} />
+          <Route path="/dynamic-programming" element={<DynamicProgrammingPage />} />
+          <Route path="/greedy" element={<GreedyPage />} />
+        </Routes>
       </div>
-    </div>
+    </Router>
   )
 }
 
